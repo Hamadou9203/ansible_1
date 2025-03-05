@@ -1,15 +1,20 @@
 ---
 - name: "Apache installation using Docker on CentOS 7"
   hosts: prod
+  gather_facts: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3.8
   pre_tasks:
   - name: Install Python 3 and pip3
     package:
-        name:
+        name: "{{ item }}"
+        state: present
+    loop:
           - python3
           - python3-pip
-        state: present
+          - git 
+          - wget
+    when: ansible_distribution == "Ubuntu"
 
   - name: Install Docker module for Python
     pip:
