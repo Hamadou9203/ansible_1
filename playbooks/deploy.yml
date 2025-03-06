@@ -4,6 +4,8 @@
   gather_facts: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3.8
+    #vars_files:
+    #     - /home/vagrant/webapp/files/.secrets/credentials.vault
   pre_tasks:
   - name: Install Python 3 and pip3
     package:
@@ -29,6 +31,8 @@
       community.docker.docker_container:
         name: webapp
         image: httpd
+        recreate: true
+        state: started 
         ports:
           - "80:80"
         volumes:

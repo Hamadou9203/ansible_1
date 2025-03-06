@@ -1,0 +1,13 @@
+---
+- name: "for copy files"
+  hosts: prod
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.8
+  vars_files:
+          - /home/vagrant/webapp/files/.secrets/credentials.vault
+  tasks:
+     - name: copy 
+       copy:
+           src: /home/vagrant/.ssh/id_rsa.pub
+           dest: /home/vagrant/.ssh/authorized_keys
