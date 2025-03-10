@@ -1,0 +1,31 @@
+---
+- name: "install role"
+  hosts: prod
+  gather_facts: yes
+  become: true
+  vars:
+    system_user: vagrant
+    compose_binary_dir: /usr/local/bin
+  pre_tasks:
+   - name: create www data
+     user:
+      name:  www-data
+      state: present
+   - name: Assurez-vous que Docker est démarré et activé au démarrage
+     service:
+       name: docker
+       state: started
+       enabled: true
+   - name: Télécharger Docker Compose
+     get_url:
+      url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+      dest: /usr/local/bin/docker-compose
+      mode: '0755'
+
+   - name: Ajouter les permissions d'exécution à Docker Compose
+     file:
+      path: /usr/local/bin/docker-compose
+      mode: '0755'
+      state: file
+  roles:
+          - role: ansible-role-containerized-wordpress

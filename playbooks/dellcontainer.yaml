@@ -1,0 +1,8 @@
+- name: "remove webb app"
+  hosts: prod
+  gather_facts: yes
+  tasks:
+    - name: Remove container
+      docker_container:
+        name: webapp
+        state: absent
